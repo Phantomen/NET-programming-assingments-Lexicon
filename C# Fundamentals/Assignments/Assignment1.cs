@@ -10,6 +10,7 @@ namespace Assignments
     {
         public static void Calculator()
         {
+            Console.Clear();
             Console.WriteLine("Welcome to the calculator!\n");
 
             while (true)
@@ -381,7 +382,8 @@ namespace Assignments
             }
 
             double mult = 0;
-            if (!multiplyByZero)    //If one of the multiplications are zero the result will be zero, and to lesser the compution power if there are big numbers and a lot of them
+            //If one of the multiplications are zero the result will be zero, stops nedless calculations
+            if (!multiplyByZero)
             {
                 mult = numbers[0];
                 for (int i = 1; i < numbers.Length; i++)
@@ -402,7 +404,7 @@ namespace Assignments
                 "0: Return\n" +
                 "1: Division of two numbers\n" +
                 "2: Division of multiple numbers\n" +
-                "3: Dividable (Rest)");
+                "3: Is dividable?");
 
             string line = Console.ReadLine();
             int multiplicationNumber;
@@ -422,7 +424,7 @@ namespace Assignments
                         break;
 
                     case 3:
-                        Divideable();
+                        DivideDivideable();
                         break;
 
                     default:
@@ -512,7 +514,7 @@ namespace Assignments
             Console.WriteLine("Division of values: {0}", div);
         }
 
-        static void Divideable()
+        static void DivideDivideable()
         {
             double[] numbers = new double[2];
             bool valid = false;
@@ -529,7 +531,7 @@ namespace Assignments
                 }
             }
             valid = false;
-            Console.WriteLine("\nPlease enter the second number to divide:");
+            Console.WriteLine("\nPlease enter the second number to divide with:");
             while (!valid)
             {
                 s = Console.ReadLine();
@@ -554,7 +556,7 @@ namespace Assignments
             }
             else
             {
-                s = string.Format("{0} is not dividable with {1}. It divides {2} number of times and has a rest of {3}"
+                s = string.Format("{0} is not dividable with {1}. It divides {2} number of times but has a rest of {3}"
                     , numbers[0], numbers[1], (numbers[0] - rest) / numbers[1], rest);
             }
             Console.WriteLine(s);
@@ -562,7 +564,6 @@ namespace Assignments
         #endregion
 
         #region Powerof
-        #region Addition
         static void PowerOf()
         {
             Console.WriteLine(
@@ -648,7 +649,8 @@ namespace Assignments
                 }
             }
 
-            double pow = numbers[0]; //Math.Pow(numbers[0], numbers[1]);
+            //pow = Math.Pow(numbers[0], numbers[1]); can be used instead of the if and forloop
+            double pow = numbers[0];
             if(numbers[1] > 0)
             {
                 for (int i = 1; i < numbers[1]; i++)
@@ -681,25 +683,24 @@ namespace Assignments
             Console.WriteLine("{0}^{1} = {2}", numbers[0], numbers[1], pow);
         }
         #endregion
-        #endregion
 
         #region FreeWrite
         static void FreeWrite()
         {
             Console.WriteLine("\nPlease enter values seperated by a \"+\", \"-\", \"*\" or \"/\"");
 
-            List<double> numbers = new List<double>();  //double[] numbers = new double[1];
+            List<double> numbers = new List<double>();
             bool valid = false;
             while (!valid)
             {
                 string completeText = Console.ReadLine();
                 string[] numberString = completeText.Split('+', '-', '*', '/');
-                //numbers = new double[numberString.Length];
 
+                //Check if all values are still valid after removing the operations
                 for (int i = 0; i < numberString.Length; i++)
                 {
                     double value;
-                    valid = double.TryParse(numberString[i], out value); //valid = double.TryParse(numberString[i], out numbers[i]);
+                    valid = double.TryParse(numberString[i], out value);
                     if (!valid)
                     {
                         Console.WriteLine("Invalid value, please input valid values (wrong value at: {0})", i + 1);
@@ -712,11 +713,10 @@ namespace Assignments
                 {
                     string[] operationString = completeText.Split(numberString, StringSplitOptions.RemoveEmptyEntries);
                     int temp = 0;
-                    for (int i = 0; i < operationString.Length; i++)
+                    for (int i = 0; i < operationString.Length; i++)    //Do multiplication and division first
                     {
                         if (operationString[i] == "*" && i + 1 - temp < numbers.Count)
                         {
-                            //Console.WriteLine("multiply {0} * {1} = {2}", numbers[i - temp], numbers[i - temp + 1], numbers[i - temp] * numbers[i - temp + 1]);
                             numbers[i - temp] *= numbers[i + 1 - temp];
                             numbers.RemoveAt(i + 1 - temp);
                             temp++;
@@ -739,12 +739,10 @@ namespace Assignments
 
                     if (valid)
                     {
-                        //temp = 0;
-                        for (int i = 0; i < operationString.Length; i++)
+                        for (int i = 0; i < operationString.Length; i++)    //Do addiiton and subtraction after
                         {
                             if (operationString[i] == "+" && numbers.Count >= 2)
                             {
-                                //Console.WriteLine("Add {0} : {1}", numbers[0], numbers[1]);
                                 numbers[0] += numbers[1];
                                 numbers.RemoveAt(1);
                             }
