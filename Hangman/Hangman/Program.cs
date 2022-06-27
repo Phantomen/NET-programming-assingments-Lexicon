@@ -20,7 +20,7 @@ namespace Hangman
         //static StringBuilder lettersIncorrect;
         //static char[] lettersCorrect;
 
-        static string wordsFilePath = Directory.GetCurrentDirectory() + "\\wordsHangman.txt";
+        static string wordsFilePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\wordsHangman.txt";   // Directory.GetCurrentDirectory() + "\\wordsHangman.txt";
 
         static void Main(string[] args)
         {
