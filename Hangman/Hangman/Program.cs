@@ -58,6 +58,7 @@ namespace Hangman
             LoadWordsFromFile();
         }
 
+        //Words are copied from https://www.hangmanwords.com/words in the textfile
         static string[] wordsToGuessArray;
         static string wordsFilePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\wordsHangman.txt";   // Directory.GetCurrentDirectory() + "\\wordsHangman.txt";
         static void LoadWordsFromFile()
