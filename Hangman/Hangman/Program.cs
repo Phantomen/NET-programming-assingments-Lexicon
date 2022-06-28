@@ -99,7 +99,7 @@ namespace Hangman
                     "Or write \"-1\" to give up");
                 Console.WriteLine();
                 Console.WriteLine();
-                DrawHangman(wordCurrent, lettersCorrect, lettersIncorrect);
+                DrawHangman(wordCurrent, lettersCorrect, lettersIncorrect, guessesCurrent);
 
                 string guessedWordOrChar = Console.ReadLine() ?? "";
                 bool valid = false;
@@ -182,7 +182,7 @@ namespace Hangman
         }
 
 
-        static void DrawHangman(string wordToFind, char[] foundLetters, StringBuilder incorrectLetters)
+        static void DrawHangman(string wordToFind, char[] foundLetters, StringBuilder incorrectLetters, int currentGuesses)
         {
             string s = "";
             // for each letter that you have found or not found, write them out. Also draw spaces as spaces
@@ -211,7 +211,7 @@ namespace Hangman
             }
 
             Console.WriteLine($"\t{incorrectLetters.ToString()}");
-            Console.WriteLine($"Tries left: {guessesMax - guessesCurrent}");
+            Console.WriteLine($"Tries left: {guessesMax - currentGuesses}");
         }
 
     }
