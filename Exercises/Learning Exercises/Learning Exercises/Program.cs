@@ -14,7 +14,7 @@ namespace Learning_Exercises
         static void Main(string[] args)
         {
             bool keepAlive = true;
-            int numberOfAssignments = 25;
+            int numberOfAssignments = 28;
             while (keepAlive)
             {
                 try
@@ -34,128 +34,143 @@ namespace Learning_Exercises
                     switch (assignmentChoice)
                     {
                         case 1:
-                            WriteRunExercise(1);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseOne();
                             break;
 
                         case 2:
-                            WriteRunExercise(2);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseTwo();
                             break;
 
                         case 3:
-                            WriteRunExercise(3);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseThree();
                             break;
 
                         case 4:
-                            WriteRunExercise(4);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseFour();
                             break;
 
                         case 5:
-                            WriteRunExercise(5);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseFive();
                             break;
 
                         case 6:
-                            WriteRunExercise(6);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseSix();
                             break;
 
                         case 7:
-                            WriteRunExercise(7);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseSeven();
                             break;
 
                         case 8:
-                            WriteRunExercise(8);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseEight();
                             break;
 
                         case 9:
-                            WriteRunExercise(9);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseNine();
                             break;
 
                         case 10:
-                            WriteRunExercise(10);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseTen();
                             break;
 
                         case 11:
-                            WriteRunExercise(11);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseEleven();
                             break;
 
                         case 12:
-                            WriteRunExercise(12);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseTwelve();
                             break;
 
                         case 13:
-                            WriteRunExercise(13);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseThirteen();
                             break;
 
                         case 14:
-                            WriteRunExercise(14);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseFourteen();
                             break;
 
                         case 15:
-                            WriteRunExercise(15);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseFifteen();
                             break;
 
                         case 16:
-                            WriteRunExercise(16);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseSixteen();
                             break;
 
                         case 17:
-                            WriteRunExercise(17);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseSeventeen();
                             break;
 
                         case 18:
-                            WriteRunExercise(18);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseEighteen();
                             break;
 
                         case 19:
-                            WriteRunExercise(19);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseNineteen();
                             break;
 
                         case 20:
-                            WriteRunExercise(20);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseTwenty();
                             break;
 
                         case 21:
-                            WriteRunExercise(21);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseTwentyOne();
                             break;
 
                         case 22:
-                            WriteRunExercise(22);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseTwentyTwo();
                             break;
 
                         case 23:
-                            WriteRunExercise(23);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseTwentyThree();
                             break;
 
                         case 24:
-                            WriteRunExercise(24);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseTwentyFour();
                             break;
 
                         case 25:
-                            WriteRunExercise(25);
+                            WriteRunExercise(assignmentChoice);
                             RunExerciseTwentyFive();
+                            break;
+
+                        case 26:
+                            WriteRunExercise(assignmentChoice);
+                            RunExerciseTwentySix();
+                            break;
+
+                        case 27:
+                            WriteRunExercise(assignmentChoice);
+                            RunExerciseTwentySeven();
+                            break;
+
+                        case 28:
+                            WriteRunExercise(assignmentChoice);
+                            RunExerciseTwentyEight();
                             break;
 
                         case -1:
@@ -1138,20 +1153,191 @@ namespace Learning_Exercises
 
         static void RunExerciseTwentyTwo()
         {
+            Dictionary<string, string> swearFilter = new Dictionary<string, string>
+            {
+                { "fuck", "damn" },
+                { "fucked", "screwed" },
+                { "shit", "crap" },
+                { "dick", "jerk" },
+                { "pussy", "weakling" },
+                { "cunt", "bastard" }
 
+            };
+
+            Console.WriteLine("Please input your text");
+            string s = Console.ReadLine();
+
+            foreach (string key in swearFilter.Keys)
+            {
+                if (s.Contains(key))
+                {
+                    s = s.Replace(key, swearFilter[key]);
+                }
+            }
+
+            Console.WriteLine(s);
         }
 
+        #region Exercise 23
+        static int[] oldUniqueArray = new int[7];
         static void RunExerciseTwentyThree()
         {
+            int arraySize = 7;
+            int[] uniqueIntArray = new int[arraySize];
+            for (int i = 0; i < arraySize; i++)
+            {
+                bool isUnique;
+                int uniqueNumber;
+                do
+                {
+                    isUnique = true;
+                    uniqueNumber = rnd.Next(14) + 1;
+                    for(int j = 0; j < i; j++)
+                    {
+                        if(uniqueNumber == uniqueIntArray[j] || oldUniqueArray.Contains(uniqueNumber))
+                        {
+                            isUnique = false;
+                            break;
+                        }
+                    }
+                } while (!isUnique);
 
+                uniqueIntArray[i] = uniqueNumber;
+            }
+
+            oldUniqueArray = uniqueIntArray;
+
+            for(int i = 0; i < arraySize; i++)
+            {
+                Console.Write(uniqueIntArray[i].ToString() + " ");
+            }
+        }
+        #endregion
+
+        #region Exercise 24
+        static void RunExerciseTwentyFour()
+        {
+            int[] deckOfCards = new int[52];
+            int[] cardsDrawn = new int[0];
+
+            for (int i = 0; i < deckOfCards.Length/4; i++)
+            {
+                for(int j = 0; j < 4; j++)
+                {
+                    deckOfCards[i * 4 + j] = i + 1;
+                }
+            }
+
+            bool drawing = true;
+            do
+            {
+                Console.WriteLine("\n");
+                Console.WriteLine($"Would you like to pull a card from the deck? ({deckOfCards.Length} remaining)\n" +
+                    $"-1: Exit\n" +
+                    $"1: Draw card\n" +
+                    $"2: Reshuffle deck");
+
+                for (int i = 0; i < cardsDrawn.Length; i++)
+                {
+                    Console.Write(cardsDrawn[i] + " ");
+                }
+                Console.WriteLine();
+
+                string str = Console.ReadLine();
+
+                switch (str)
+                {
+                    case "-1":
+                        drawing = false;
+                        break;
+
+                    case "1":
+                        int card = DrawCard(ref deckOfCards);
+                        if(card != 0)
+                        {
+                            Array.Resize(ref cardsDrawn, cardsDrawn.Length + 1);
+                            cardsDrawn[cardsDrawn.Length - 1] = card;
+                            Console.WriteLine($"You drew {card} from the deck");
+                        }
+                        else
+                        {
+                            Console.WriteLine("There are no cards left to draw");
+                        }
+                        break;
+
+                    case "2":
+                        Shuffle(ref deckOfCards);
+                        break;
+
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("That is not a valid option!");
+                        Console.ForegroundColor = currentColor;
+                        break;
+                }
+
+            } while (drawing);
         }
 
-        static void RunExerciseTwentyFour()
+        static int DrawCard(ref int[] deck)
+        {
+            if(deck.Length > 0)
+            {
+                int card = deck.Last();
+                Array.Resize(ref deck, deck.Length - 1);
+                return card;
+            }
+            return 0;   // return 0 of there is no card to draw
+        }
+
+        static void Shuffle(ref int[] deck)
+        {
+            if(deck.Length > 1)
+            {
+                for (int shuffle = 0; shuffle < deck.Length * 3; shuffle++)
+                {
+                    int cardOne = rnd.Next(deck.Length);
+                    int cardTwo;
+                    do
+                    {
+                        cardTwo = rnd.Next(deck.Length);
+                    } while(cardOne == cardTwo);
+
+                    int temp = deck[cardOne];
+                    deck[cardOne] = deck[cardTwo];
+                    deck[cardTwo] = temp;
+                }
+                Console.WriteLine("The deck has been shuffled");
+            }
+            else
+            {
+                Console.WriteLine("There is not enough cards to shuffle");
+            }
+        }
+        #endregion
+
+        static void RunExerciseTwentyFive()
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+        }
+        static void RunExerciseTwentySix()
         {
 
         }
 
-        static void RunExerciseTwentyFive()
+        static void RunExerciseTwentySeven()
+        {
+
+        }
+
+        static void RunExerciseTwentyEight()
         {
 
         }
