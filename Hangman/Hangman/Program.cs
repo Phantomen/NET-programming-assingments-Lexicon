@@ -9,22 +9,9 @@ namespace Hangman
 {
     internal class Program
     {
-        const int guessesMax = 10;
-        static int guessesCurrent = 0;
-
-        static Random rnd = new Random();
-
-        static string[] wordsToGuessArray;
-        ////static string wordCurrent = "";
-
-        //static StringBuilder lettersIncorrect;
-        //static char[] lettersCorrect;
-
-        static string wordsFilePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\wordsHangman.txt";   // Directory.GetCurrentDirectory() + "\\wordsHangman.txt";
-
         static void Main(string[] args)
         {
-            Start();
+            SetUpGame();
 
             bool keepAlive = true;
             while (keepAlive)
@@ -37,10 +24,6 @@ namespace Hangman
                     Console.WriteLine();
 
                     string playOrExitStr = Console.ReadLine() ?? "";
-                    //bool valid = true;
-                    //bool gussedNumber = int.TryParse(guessedWordOrChar, out int num);
-                    //ConsoleColor currentColor = Console.ForegroundColor;
-                    //Console.ForegroundColor = ConsoleColor.Green;
 
                     switch (playOrExitStr)
                     {
@@ -57,37 +40,12 @@ namespace Hangman
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Invalid input!");
                             Console.ResetColor();
-                            //valid = false;
                             break;
-
-                            //case "":
-                            //    Console.ForegroundColor = ConsoleColor.Red;
-                            //    Console.WriteLine("That is not a valid assignment number!");
-                            //    Console.ResetColor();
-                            //    break;
-
-                            //default:
-                            //    if (!guessedWordOrChar.All(char.IsLetter))
-                            //    {
-                            //        Console.ForegroundColor = ConsoleColor.Red;
-                            //        Console.WriteLine("Invalid guess!");
-                            //        Console.ResetColor();
-                            //        valid = false;
-                            //        break;
-                            //    }
-                            //    valid = true;
-                            //    break;
                     }
-
-                    //Console.ResetColor();
-                    //Console.WriteLine("Hit any key to continue!");
-                    //Console.ReadKey();
-                    //Console.Clear();
                 }
 
                 catch
                 {
-                    //ConsoleColor currentColor = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("That is not a valid assignment number!");
                     Console.ResetColor();
@@ -95,77 +53,72 @@ namespace Hangman
             }
         }
 
-        static void Start()
+        static void SetUpGame()
         {
             LoadWordsFromFile();
         }
 
+        static string[] wordsToGuessArray;
+        static string wordsFilePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\wordsHangman.txt";   // Directory.GetCurrentDirectory() + "\\wordsHangman.txt";
         static void LoadWordsFromFile()
         {
             using (StreamReader sr = File.OpenText(wordsFilePath))
             {
-                string[] s = sr.ReadToEnd().Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                // load in the textfile, convert it to lowercase and split it
+                string[] s = sr.ReadToEnd().ToLower().Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                 wordsToGuessArray = s;
-
-                //string[] s = sr.ReadToEnd().Split(new string[] {"\n"}, StringSplitOptions.RemoveEmptyEntries);
-                //wordsToGuessArray = s;
-
-                //string[] s = File.ReadAllLines(wordsFilePath);
-                //wordsToGuessArray = s;
-
             }
         }
 
-        static bool HangmansGame()
+
+        const int guessesMax = 10;
+        //static int guessesCurrent = 0;
+        static Random rnd = new Random();
+
+        static void HangmansGame()
         {
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine();
 
-            bool playing = true;
+            int guessesCurrent = 0;
 
-            guessesCurrent = 0;
+            string wordCurrent = wordsToGuessArray[rnd.Next(wordsToGuessArray.Length)];
 
-            string wordCurrent = /*"testing"; */wordsToGuessArray[rnd.Next(wordsToGuessArray.Length)];
-
-            StringBuilder lettersIncorrect = new StringBuilder();
+            // number of unique letters in the word, if the word contains a space, then remove one unique letter, since it counts as one
             char[] lettersCorrect = new char[wordCurrent.Contains(' ') ? wordCurrent.Distinct().Count() - 1 : wordCurrent.Distinct().Count()];
             int foundLetters = 0;
+            StringBuilder lettersIncorrect = new StringBuilder();
 
-            while (playing && guessesCurrent < guessesMax)
+
+
+            while (guessesCurrent < guessesMax)
             {
-
                 Console.Write("Enter a single char to see if the word contains the letter\n" +
-                    "Enter a string to guess the word\n" +
+                    "Or enter a string to guess the word\n" +
                     "Or write \"-1\" to give up");
                 Console.WriteLine();
                 Console.WriteLine();
                 DrawHangman(wordCurrent, lettersCorrect, lettersIncorrect);
 
-
-
                 string guessedWordOrChar = Console.ReadLine() ?? "";
                 bool valid = false;
-                //bool gussedNumber = int.TryParse(guessedWordOrChar, out int num);
-                //ConsoleColor currentColor = Console.ForegroundColor;
-                //Console.ForegroundColor = ConsoleColor.Green;
-
 
                 switch (guessedWordOrChar)
                 {
-
                     case "-1":
-                        playing = false;
-                        break;
+                        Console.WriteLine($"You gave up guessing the word \"{wordCurrent}\" after {guessesCurrent} tries");
+                        return;
 
                     case "":
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("That is not a valid assignment number!");
+                        Console.WriteLine("You need to write something!");
                         Console.ResetColor();
                         break;
 
                     default:
-                        if (!guessedWordOrChar.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+                        // If the guess does not only contains letters and spaces, or if it only contain spaces
+                        if (!guessedWordOrChar.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)) || (guessedWordOrChar.Distinct().Count() == 1 && guessedWordOrChar[0] == ' '))
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Invalid guess!");
@@ -179,8 +132,8 @@ namespace Hangman
                 if (valid)
                 {
                     guessesCurrent++;
-                    guessedWordOrChar = guessedWordOrChar.ToLower();
-                    if (guessedWordOrChar.Length == 1)
+                    guessedWordOrChar = guessedWordOrChar.ToLower();    // Incase the person wrote an uppercase letter, since the word to guess is a lowercase one
+                    if (guessedWordOrChar.Length == 1)  // If they only entered one letter, see if the word contains it
                     {
                         if (lettersCorrect.Contains(guessedWordOrChar[0]) || lettersIncorrect.ToString().Contains(guessedWordOrChar))
                         {
@@ -202,40 +155,37 @@ namespace Hangman
                             }
                         }
 
+                        //if the player has guessed all the letters but not guessed the word, they have found the word
                         if (foundLetters == lettersCorrect.Length)
                         {
                             Console.WriteLine($"Congratulations, you found all letters that makes up the word \"{wordCurrent}\"!");
                             Console.WriteLine();
-                            return true;
+                            return;
                         }
                     }
 
-                    else//is a string
+                    else    //if length > 1
                     {
                         if(wordCurrent == guessedWordOrChar)
                         {
                             Console.WriteLine($"Congratulations, you found \"{wordCurrent}\" in {guessesCurrent} tries!");
                             Console.WriteLine();
-                            return true;
+                            return;
                         }
                     }
                 }
-
                 Console.WriteLine();
-                //Console.Clear();
             }
-
-
-
             Console.WriteLine($"You were unable to guess the word \"{wordCurrent}\" in {guessesMax} tries");
             Console.WriteLine();
-            return false;
+            return;
         }
 
 
         static void DrawHangman(string wordToFind, char[] foundLetters, StringBuilder incorrectLetters)
         {
             string s = "";
+            // for each letter that you have found or not found, write them out. Also draw spaces as spaces
             for(int i = 0; i < wordToFind.Length; i++)
             {
                 if (wordToFind[i] == ' ')
@@ -259,9 +209,8 @@ namespace Hangman
             {
                 Console.Write(foundLetters[i]);
             }
+
             Console.WriteLine($"\t{incorrectLetters.ToString()}");
-
-
             Console.WriteLine($"Tries left: {guessesMax - guessesCurrent}");
         }
 
