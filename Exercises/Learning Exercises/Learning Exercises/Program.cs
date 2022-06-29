@@ -282,11 +282,6 @@ namespace Learning_Exercises
 
         private static void RunExerciseSix()
         {
-            //int a = 8;
-            //int b = 1;
-            //double average = (double)(a + b) / 2;
-            //Console.WriteLine(average);
-
             bool valid = false;
             int value1 = 0;
             int value2 = 0;
