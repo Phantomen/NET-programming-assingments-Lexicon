@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+
 
 namespace Learning_Exercises
 {
@@ -1316,30 +1318,94 @@ namespace Learning_Exercises
         }
         #endregion
 
+        #region Exercise 25
         static void RunExerciseTwentyFive()
         {
+            Console.WriteLine("Please enter two digits (a / b = c)");
+            int intOne = ExerciseTwentyFiveGetInt();
+            int intTwo = ExerciseTwentyFiveGetInt();
+
+            Console.WriteLine();
             try
             {
-
+                Console.WriteLine($"{intOne} / {intTwo} = {(float)intOne / intTwo}");
             }
             catch
             {
-
+                Console.WriteLine("You can't divide with 0");
             }
         }
+
+        static int ExerciseTwentyFiveGetInt()
+        {
+            do
+            {
+                Console.WriteLine("Please input a valid int");
+                try
+                {
+                    return int.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.WriteLine("That is not a valid int!");
+                }
+            } while (true);
+        }
+        #endregion
+
         static void RunExerciseTwentySix()
         {
+            Console.WriteLine("Printing paths to computer locations:");
+            Console.WriteLine("My documents: " + Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            Console.WriteLine("My pictures: " + Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
+            Console.WriteLine("Cookies: " + Environment.GetFolderPath(Environment.SpecialFolder.Cookies));
+            Console.WriteLine("Current folder: " + Environment.CurrentDirectory);
 
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Exercise26";
+            FileStream myFile = File.Create(path);
+            myFile.Close();
         }
 
         static void RunExerciseTwentySeven()
         {
-
+            string path = Directory.GetCurrentDirectory() + "\\MyName.txt";
+            using (StreamReader sr = File.OpenText(path))
+            {
+                string[] names = sr.ReadToEnd().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string name in names)
+                {
+                    Console.WriteLine(name);
+                }
+            }
         }
 
         static void RunExerciseTwentyEight()
         {
+            string[] namesOne = { "Jesper", "Elias", "Karro", "Nathan", "Albin" };
+            string[] namesTwo = { "Robin", "Samuel", "Marcus", "Markus", "Sanna"};
+            string path = Directory.GetCurrentDirectory() + "\\MyName.txt";
 
+            using (StreamWriter sw = File.CreateText(path))
+            {
+                string s = namesOne[0];
+                for (int i = 1; i < namesOne.Length; i++)
+                {
+                    s += $",{namesOne[i]}";
+                }
+                sw.WriteLine(s);
+                sw.Close();
+            }
+
+            using (StreamWriter sw = new StreamWriter(path, true))
+            {
+                string s = namesTwo[0];
+                for (int i = 1; i < namesTwo.Length; i++)
+                {
+                    s += $",{namesTwo[i]}";
+                }
+                sw.WriteLine(s);
+                sw.Close();
+            }
         }
     }
 }
