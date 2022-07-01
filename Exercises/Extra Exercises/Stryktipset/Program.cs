@@ -24,7 +24,7 @@ namespace Stryktipset
             {
                 return "X";
             }
-            else // (matchWin[0] == StryktipsWin.Two)
+            else // stw == StryktipsWin.Two
             {
                 return "2";
             }
@@ -114,7 +114,7 @@ namespace Stryktipset
         static void Reducerat()
         {
             StryktipsWin[,] stryktipsReduceratCombinations = new StryktipsWin[4, 81];
-            #region Get All Cominations
+            #region Get All Combinations
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 27; j++)
@@ -159,7 +159,7 @@ namespace Stryktipset
             }
 
 
-            Console.WriteLine("\n\nReducerat:");
+            Console.WriteLine("\n\nReduced system:");
 
             int[] stryktipsReducerat = new int[9];
             for (int i = 0; i < 9; i++)
