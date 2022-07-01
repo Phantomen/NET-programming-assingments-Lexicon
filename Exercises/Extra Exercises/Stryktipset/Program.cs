@@ -10,12 +10,29 @@ namespace Stryktipset
     {
         enum StryktipsWin
         {
-            One,
-            X,
-            Two
+            One = 0,
+            X = 1,
+            Two = 2
+        }
+        static string GetStryktipsString(StryktipsWin stw)
+        {
+            if (stw == StryktipsWin.One)
+            {
+                return "1";
+            }
+            else if (stw == StryktipsWin.X)
+            {
+                return "X";
+            }
+            else // (matchWin[0] == StryktipsWin.Two)
+            {
+                return "2";
+            }
         }
 
+
         static int combinationOfMatches = 0;
+        static Random rnd = new Random();
 
         static void Main(string[] args)
         {
@@ -58,6 +75,9 @@ namespace Stryktipset
                 Stryktips(numberOfMatches, new StryktipsWin[numberOfMatches]);
                 Console.WriteLine($"\nThere is a total of {combinationOfMatches} different combinations for {numberOfMatches} matches");
                 Console.WriteLine("\n");
+
+
+                Reducerat();
             }
         }
 
@@ -79,39 +99,94 @@ namespace Stryktipset
             }
             else
             {
-                #region Get output
-                string s = "";
-                if (matchWin[0] == StryktipsWin.One)
-                {
-                    s += "1";
-                }
-                else if (matchWin[0] == StryktipsWin.X)
-                {
-                    s += "X";
-                }
-                else // (matchWin[0] == StryktipsWin.Two)
-                {
-                    s += "2";
-                }
+                string s = GetStryktipsString(matchWin[0]);
+
                 for (int i = 1; i < matchWin.Length; i++)
                 {
-                    if(matchWin[i] == StryktipsWin.One)
-                    {
-                        s += ",1";
-                    }
-                    else if (matchWin[i] == StryktipsWin.X)
-                    {
-                        s += ",X";
-                    }
-                    else // (matchWin[i] == StryktipsWin.Two)
-                    {
-                        s += ",2";
-                    }
+                    s += $", {GetStryktipsString(matchWin[i])}";
                 }
-                #endregion
+
                 Console.WriteLine(s);
                 combinationOfMatches++;
             }
         }
+
+        static void Reducerat()
+        {
+            StryktipsWin[,] stryktipsReduceratCombinations = new StryktipsWin[4, 81];
+            #region Get All Cominations
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 27; j++)
+                {
+                    stryktipsReduceratCombinations[0, j + (27 * i)] = (StryktipsWin)i;
+                }
+            }
+
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    stryktipsReduceratCombinations[1, j + (9 * i)] = (StryktipsWin)(i % 3);
+                }
+            }
+
+            for (int i = 0; i < 27; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    stryktipsReduceratCombinations[2, j + (3 * i)] = (StryktipsWin)(i % 3);
+                }
+            }
+
+            for (int i = 0; i < 81; i++)
+            {
+                stryktipsReduceratCombinations[3, i] = (StryktipsWin)(i % 3);
+
+            }
+            #endregion
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                string s = "";
+                Console.WriteLine();
+                for (int j = 0; j < 81; j++)
+                {
+                    s += GetStryktipsString(stryktipsReduceratCombinations[i, j]);
+                }
+                Console.WriteLine(s);
+            }
+
+
+            Console.WriteLine("\n\nReducerat:");
+
+            int[] stryktipsReducerat = new int[9];
+            for (int i = 0; i < 9; i++)
+            {
+                while (true)
+                {
+                    int rndNumber = rnd.Next(81);
+                    if (!stryktipsReducerat.Contains(rndNumber))
+                    {
+                        stryktipsReducerat[i] = rndNumber;
+                        break;
+                    }
+                }
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                string s = "";
+                for (int j = 0; j < 9; j++)
+                {
+                    s += GetStryktipsString(stryktipsReduceratCombinations[i, stryktipsReducerat[j]]);
+                }
+                Console.WriteLine(s);
+                Console.WriteLine();
+            }
+        }
+
+
     }
 }
